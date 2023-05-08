@@ -5,7 +5,7 @@ const ajax = new XMLHttpRequest(), //Variable ajax que instancia del objeto XMLH
 
 function estatus()  {
     console.log("---------------respuesta------------")
-    console.log(ajax.responseText)
+    //console.log(ajax.responseText)
     console.log(`La URL de la peticion es: ${ajax.responseURL}`)
     console.log("--------estado de la peticion ------- ")
     const estado = ajax.readyState
@@ -40,7 +40,20 @@ ajax.addEventListener("readystatechange", (e) => {
 
     if (ajax.status >= 200 && ajax.status < 300) { //Si la respuesta es satisfactoria
         let json = JSON.parse(ajax.responseText); //Convierte la respuesta Ajax en un objeto
+        console.log("---------")
+       
+        
+        json.forEach(element => {
+            console.log(element.name, element.username, element.website)
+            const $li = document.createElement("li")
+            const info = `${element.name}  /  ${element.username}  / S ${element.website}`
+            $li.innerHTML = info
+            $fragmento.appendChild($li)
+        });
+        $lista.appendChild($fragmento)
 
+    }
+/*
         for (const key in json) { //recorre el objeto
             console.log(`Llave: ${key}, Valor: ${json[key]}`)
             const $li = document.createElement("li"); //Crea el elemento li 
@@ -52,15 +65,17 @@ ajax.addEventListener("readystatechange", (e) => {
         let message = ajax.statusText || "Ocurrió un error";
         $lista.innerHTML = `Error ${ajax.status}: ${message}`;
     }
+    */
 
     estatus()
 
 
     console.log("----------segunda parte-------------")
     
+
 });
 
 /*Abre la petición con el método GET.*/
-ajax.open("GET", "https://jsonplaceholder.typicode.com/comments/63");
+ajax.open("GET", "https://jsonplaceholder.typicode.com/users");
 /*envia la peticioN*/
 ajax.send();
